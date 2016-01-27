@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset=utf-8>
+
+<title>RepTile</title>
+
+<style type="text/css">
+html * {
+    width:100%;
+    height:100%;
+}
+body {
+    width:100%;
+    height:100%;
+    font: normal 16px/20px "Helvetica Neue", Helvetica, sans-serif;
+    background: rgb(237, 237, 236) url('rep-tile-bg.png');
+    margin: 0;
+    padding: 0;
+}
+body.hoverEnd #wrapper { opacity: 0; }
+
+section {
+    display: block;
+}
+#wrapper {
+    position:absolute;
+    width: 100%;
+    padding: 0;
+    background: transparent;
+    margin: 0;
+}
+#wrapper.hover { opacity: 1; }
+
+#status {
+    position:relative;
+    top:100px;
+    width:300px;
+    height:auto;
+    margin:0 auto;
+    padding:0 20px 10px 20px;
+    color: #fff;
+    background: #ccc;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+#status.fail {
+    background: #aa3737;
+}
+#status.success {
+    background: #4eb455 url('rep-tile-icon.png') center 20px no-repeat;
+    padding-top: 220px;
+}
+#status.offline {
+    background: #aa3737;
+}
+#status.online {
+    background: #4eb455 url('rep-tile-icon.png') center 20px no-repeat;
+    padding-top: 220px;
+}
+#status h1{
+    font-size: 2em;
+    margin: 5px;
+    padding: 0;
+}
+#status span{
+    font-size:0.8em;
+    line-height:0.8em;
+    color: #666;
+}
+#status a{
+    color: #666;
+}
+[contenteditable]:hover:not(:focus) {
+    outline: 1px dotted #ccc;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<section id="wrapper">
+
+<article>
+  
+  <p id="status">Oh dear, your browser doesn't support HTML5.</p>
+  
+</article>
+
+<script>
+var popUP = document.getElementById('wrapper'),
+    state = document.getElementById('status'),
+    theBody = document.body;
+
+if (typeof window.FileReader === 'undefined') {
+  state.className = 'fail';
+} else {
+  state.className = 'success';
+  state.innerHTML = '<h1>RepTile</h1><p>Drag n Drop BG tile from PC <br/> (PNG, JPG, GIF) </p><p><span>Icon made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></span></p>';
+}
+ 
+theBody.ondragover = function () {
+    popUP.className = 'hover';
+    return false;
+};
+
+theBody.ondragend = function () {
+    this.className = 'hoverEnd';
+    return false;
+};
+
+theBody.ondrop = function (e) {
+  this.className = '';
+  this.className = 'hoverEnd';
+  e.preventDefault();
+
+  var file = e.dataTransfer.files[0],
+      reader = new FileReader();
+  reader.onload = function (event) {
+    theBody.style.background = 'url(' + event.target.result + ') top left repeat';
+  };
+  reader.readAsDataURL(file);
+
+  return false;
+};
+
+</script>
+
+</section>
+
+</body>
+</html>
